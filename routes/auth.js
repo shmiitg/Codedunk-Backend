@@ -27,13 +27,7 @@ router.post("/auth/register", async (req, res) => {
         const token = jwt.sign({ id: user._id }, process.env.SECRET_KEY, {
             expiresIn: 24 * 60 * 60 * 1000,
         });
-        res.cookie("usertoken", token, {
-            expires: new Date(Date.now() + 24 * 60 * 60 * 1000),
-            httpOnly: true,
-        })
-            .status(200)
-            .json({ msg: "Successfully registered", token: token });
-        // res.status(200).json({ msg: 'Successfully registered' });
+        res.status(200).json({ msg: "Successfully logged in", token: token });
     } catch (err) {
         res.status(500).json({ error: "Some error occured" });
     }
@@ -57,12 +51,7 @@ router.post("/auth/login", async (req, res) => {
         const token = jwt.sign({ id: user._id }, process.env.SECRET_KEY, {
             expiresIn: 24 * 60 * 60 * 1000,
         });
-        res.cookie("usertoken", token, {
-            expires: new Date(Date.now() + 24 * 60 * 60 * 1000),
-            httpOnly: true,
-        })
-            .status(200)
-            .json({ msg: "Successfully logged in", token: token });
+        res.status(200).json({ msg: "Successfully logged in", token: token });
     } catch (err) {
         res.status(500).json({ error: "Some error occured" });
     }
@@ -70,7 +59,7 @@ router.post("/auth/login", async (req, res) => {
 
 router.get("/auth/logout", (req, res) => {
     try {
-        res.status(200).clearCookie("usertoken").json({ msg: "Successfully logged out" });
+        res.status(200).json({ msg: "Successfully logged out" });
     } catch (err) {
         res.status(500).json({ error: "Some error occured" });
     }
